@@ -40,9 +40,11 @@ export default function Dashboard() {
               <div style={styles.grid}>
                 {[
                   { label: "Personality", value: profile.personality },
+                  { label: "Attachment Style", value: profile.attachment_style },
                   { label: "Lifestyle", value: profile.lifestyle },
                   { label: "Values", value: profile.values },
                   { label: "Relationship Goals", value: profile.relationship_goals },
+                  { label: "Attraction Profile", value: profile.attraction_profile },
                   { label: "Humor & Interests", value: profile.humor },
                   { label: "Dealbreakers", value: profile.dealbreakers },
                 ].map(({ label, value }) => value ? (

@@ -1,24 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-
-const SYSTEM_PROMPT = `You are Nudj's interview AI. Your job is to deeply understand who this person is — not just their surface preferences, but their values, personality, and what they truly need in a partner.
-
-You conduct a warm, natural conversation. You're curious, non-judgmental, and occasionally funny. You do NOT sound like a questionnaire.
-
-Cover these areas one at a time: personality, lifestyle, values, relationship goals, physical preferences, humor/interests, dealbreakers.
-
-Rules: Ask ONE question at a time. Keep responses concise. After 10-15 exchanges end with: "I think I have a really good picture of you now. Let me put your agent together."`;
-
-const PROFILE_PROMPT = `Based on this interview, return ONLY valid JSON:
-{
-  "personality": "2-3 sentence summary",
-  "lifestyle": "daily rhythm and habits",
-  "values": "core values and worldview",
-  "relationship_goals": "what they want in a relationship",
-  "humor": "sense of humor and interests",
-  "dealbreakers": "absolute dealbreakers",
-  "agent_persona": "1 paragraph: how their AI agent should present itself to other agents",
-  "profile_complete": true
-}`;
+import { SYSTEM_PROMPT, PROFILE_PROMPT } from "../shared";
 
 async function cohereChat(messages: { role: string; content: string }[]) {
   const res = await fetch("https://api.cohere.com/v2/chat", {
@@ -29,10 +10,12 @@ async function cohereChat(messages: { role: string; content: string }[]) {
     },
     body: JSON.stringify({ model: "command-a-03-2025", messages }),
   });
-  const data = await res.json();
-  if (data.message?.content?.[0]?.text) return data.message.content[0].text as string;
-  if (data.text) return data.text as string;
-  throw new Error(`Unexpected Cohere response: ${JSON.stringify(data)}`)
+  const raw = await res.text();
+  let data: Record<string, unknown>;
+  try { data = JSON.parse(raw); } catch { throw new Error(`Non-JSON from Cohere: ${raw.slice(0, 300)}`); }
+  if ((data as any).message?.content?.[0]?.text) return (data as any).message.content[0].text as string;
+  if ((data as any).text) return (data as any).text as string;
+  throw new Error(`Cohere response: ${raw.slice(0, 500)}`);
 }
 
 export async function POST(req: NextRequest) {
