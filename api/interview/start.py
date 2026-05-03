@@ -1,10 +1,7 @@
-import sys
 import os
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../../'))
-
 from http.server import BaseHTTPRequestHandler
 import json
-import anthropic
+import cohere
 
 SYSTEM_PROMPT = """You are Nudj's interview AI. Your job is to deeply understand who this person is — not just their surface preferences, but their values, personality, and what they truly need in a partner.
 
@@ -30,17 +27,17 @@ Start with a warm, brief intro and your first question."""
 
 class handler(BaseHTTPRequestHandler):
     def do_POST(self):
-        api_key = os.environ.get("ANTHROPIC_API_KEY", "")
-        client = anthropic.Anthropic(api_key=api_key)
+        co = cohere.ClientV2(api_key=os.environ.get("COHERE_API_KEY", ""))
 
-        response = client.messages.create(
-            model="claude-sonnet-4-6",
-            max_tokens=1024,
-            system=SYSTEM_PROMPT,
-            messages=[{"role": "user", "content": "Hello, I'm ready to start."}],
+        response = co.chat(
+            model="command-r-plus",
+            messages=[
+                {"role": "system", "content": SYSTEM_PROMPT},
+                {"role": "user", "content": "Hello, I'm ready to start."},
+            ],
         )
 
-        reply = response.content[0].text
+        reply = response.message.content[0].text
         self.send_response(200)
         self.send_header("Content-Type", "application/json")
         self.send_header("Access-Control-Allow-Origin", "*")

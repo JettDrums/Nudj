@@ -1,1 +1,1 @@
-anthropic==0.34.2
+cohere==5.11.0

@@ -1,10 +1,7 @@
-import sys
 import os
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../../'))
-
 from http.server import BaseHTTPRequestHandler
 import json
-import anthropic
+import cohere
 
 SYSTEM_PROMPT = """You are Nudj's interview AI. Your job is to deeply understand who this person is — not just their surface preferences, but their values, personality, and what they truly need in a partner.
 
@@ -48,32 +45,28 @@ class handler(BaseHTTPRequestHandler):
         history = body.get("history", [])
         user_message = body.get("user_message", "")
 
-        api_key = os.environ.get("ANTHROPIC_API_KEY", "")
-        client = anthropic.Anthropic(api_key=api_key)
+        co = cohere.ClientV2(api_key=os.environ.get("COHERE_API_KEY", ""))
 
-        messages = [{"role": m["role"], "content": m["content"]} for m in history]
+        # Build messages list
+        messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+        for m in history:
+            role = "user" if m["role"] == "user" else "assistant"
+            messages.append({"role": role, "content": m["content"]})
         messages.append({"role": "user", "content": user_message})
 
-        response = client.messages.create(
-            model="claude-sonnet-4-6",
-            max_tokens=1024,
-            system=SYSTEM_PROMPT,
-            messages=messages,
-        )
-
-        reply = response.content[0].text
+        response = co.chat(model="command-r-plus", messages=messages)
+        reply = response.message.content[0].text
         profile_complete = "let me put your agent together" in reply.lower()
 
         profile = None
         if profile_complete:
             convo = "\n".join(f"{m['role'].upper()}: {m['content']}" for m in messages)
             convo += f"\nASSISTANT: {reply}"
-            ext = client.messages.create(
-                model="claude-sonnet-4-6",
-                max_tokens=2048,
+            ext = co.chat(
+                model="command-r-plus",
                 messages=[{"role": "user", "content": f"{PROFILE_PROMPT}\n\nCONVERSATION:\n{convo}"}],
             )
-            raw = ext.content[0].text.strip()
+            raw = ext.message.content[0].text.strip()
             if raw.startswith("```"):
                 raw = raw.split("```")[1]
                 if raw.startswith("json"):
