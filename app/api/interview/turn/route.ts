@@ -30,7 +30,9 @@ async function cohereChat(messages: { role: string; content: string }[]) {
     body: JSON.stringify({ model: "command-r-plus", messages }),
   });
   const data = await res.json();
-  return data.message.content[0].text as string;
+  if (data.message?.content?.[0]?.text) return data.message.content[0].text as string;
+  if (data.text) return data.text as string;
+  throw new Error(`Unexpected Cohere response: ${JSON.stringify(data)}`)
 }
 
 export async function POST(req: NextRequest) {
