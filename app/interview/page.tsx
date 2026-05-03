@@ -26,9 +26,14 @@ export default function InterviewPage() {
     try {
       const res = await fetch(`/api/interview/start?session_id=${SESSION_ID}`, { method: "POST" });
       const data = await res.json();
-      setMessages([{ role: "assistant", content: data.assistant_message }]);
-    } catch {
-      setMessages([{ role: "assistant", content: "Hey — ready to build your agent? Tell me a bit about yourself." }]);
+      if (data.error) {
+        setMessages([{ role: "assistant", content: `DEBUG ERROR: ${data.error}` }]);
+      } else {
+        setMessages([{ role: "assistant", content: data.assistant_message }]);
+      }
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : String(e);
+      setMessages([{ role: "assistant", content: `DEBUG ERROR: ${msg}` }]);
     } finally {
       setLoading(false);
     }
@@ -49,10 +54,15 @@ export default function InterviewPage() {
         body: JSON.stringify({ session_id: SESSION_ID, user_message: userMsg, history: messages }),
       });
       const data = await res.json();
-      setMessages([...newHistory, { role: "assistant", content: data.assistant_message }]);
-      if (data.profile_complete) setDone(true);
-    } catch {
-      setMessages([...newHistory, { role: "assistant", content: "Lost my train of thought — try again?" }]);
+      if (data.error) {
+        setMessages([...newHistory, { role: "assistant", content: `DEBUG ERROR: ${data.error}` }]);
+      } else {
+        setMessages([...newHistory, { role: "assistant", content: data.assistant_message }]);
+        if (data.profile_complete) setDone(true);
+      }
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : String(e);
+      setMessages([...newHistory, { role: "assistant", content: `DEBUG ERROR: ${msg}` }]);
     } finally {
       setLoading(false);
     }
