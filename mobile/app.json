@@ -1,0 +1,24 @@
+{
+  "expo": {
+    "name": "Nudj",
+    "slug": "nudj",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "nudj",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "resizeMode": "contain",
+      "backgroundColor": "#0A0A0A"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.nudj.app"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#0A0A0A"
+      },
+      "package": "com.nudj.app"
+    }
+  }
+}
