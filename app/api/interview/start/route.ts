@@ -17,7 +17,7 @@ async function cohereChat(messages: { role: string; content: string }[]) {
       Authorization: `Bearer ${process.env.COHERE_API_KEY}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ model: "command-r-plus", messages }),
+    body: JSON.stringify({ model: "command-r-plus-08-2024", messages }),
   });
   const raw = await res.text();
   let data: Record<string, unknown>;
