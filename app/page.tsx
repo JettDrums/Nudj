@@ -3,13 +3,16 @@ import Link from "next/link";
 export default function Home() {
   return (
     <main style={styles.container}>
+      <div style={styles.topRight}>
+        <Link href="/login" style={styles.loginLink}>Log in</Link>
+      </div>
       <div style={styles.badge}>Beta</div>
       <h1 style={styles.logo}>nudg</h1>
       <p style={styles.tagline}>
         Your agent meets theirs.<br />If they click, you get a date.
       </p>
       <div style={styles.buttons}>
-        <Link href="/interview" style={styles.primaryBtn}>Build My Agent</Link>
+        <Link href="/signup" style={styles.primaryBtn}>Get Started</Link>
         <Link href="/dashboard" style={styles.secondaryBtn}>View Dashboard</Link>
       </div>
       <p style={styles.sub}>No swiping. No bios. Just your AI working for you.</p>
@@ -18,7 +21,10 @@ export default function Home() {
 }
 
 const styles: Record<string, React.CSSProperties> = {
+  topRight: { position: "absolute", top: "24px", right: "32px" },
+  loginLink: { color: "#7C4DFF", textDecoration: "none", fontSize: "15px", fontWeight: 600 },
   container: {
+    position: "relative",
     minHeight: "100vh",
     display: "flex",
     flexDirection: "column",

@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { supabase } from "@/lib/supabase";
 
 type Message = { role: "user" | "assistant"; content: string };
 const SESSION_ID = Math.random().toString(36).slice(2);
@@ -16,7 +17,12 @@ export default function InterviewPage() {
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const router = useRouter();
 
-  useEffect(() => { startInterview(); }, []);
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (!user) { router.push("/login"); return; }
+      startInterview();
+    });
+  }, []);
   useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages, loading]);
 
   async function startInterview() {
@@ -52,6 +58,10 @@ export default function InterviewPage() {
       const data = await res.json();
       setMessages([...newHistory, { role: "assistant", content: data.assistant_message }]);
       if (data.profile_complete && data.profile) {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+          await supabase.from("profiles").upsert({ id: user.id, ...data.profile, updated_at: new Date().toISOString() });
+        }
         localStorage.setItem("nudg_profile", JSON.stringify(data.profile));
         setTimeout(() => router.push("/dashboard"), 1800);
       }

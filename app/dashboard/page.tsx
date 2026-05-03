@@ -2,14 +2,28 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabase";
 
 export default function Dashboard() {
   const [profile, setProfile] = useState<Record<string, string> | null>(null);
   const [dots, setDots] = useState(".");
+  const router = useRouter();
 
   useEffect(() => {
-    const raw = localStorage.getItem("nudg_profile");
-    if (raw) setProfile(JSON.parse(raw));
+    async function loadProfile() {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) { router.push("/login"); return; }
+
+      const { data } = await supabase.from("profiles").select("*").eq("id", user.id).single();
+      if (data) {
+        setProfile(data);
+      } else {
+        const raw = localStorage.getItem("nudg_profile");
+        if (raw) setProfile(JSON.parse(raw));
+      }
+    }
+    loadProfile();
     const interval = setInterval(() => setDots((d) => d.length >= 3 ? "." : d + "."), 600);
     return () => clearInterval(interval);
   }, []);
@@ -21,6 +35,10 @@ export default function Dashboard() {
         <div style={styles.navLinks}>
           <Link href="/dashboard" style={styles.navActive}>Agent</Link>
           <Link href="/profile" style={styles.navLink}>Profile</Link>
+          <button
+            onClick={async () => { await supabase.auth.signOut(); router.push("/"); }}
+            style={styles.logoutBtn}
+          >Log out</button>
         </div>
       </nav>
 
@@ -79,6 +97,7 @@ const styles: Record<string, React.CSSProperties> = {
   navLinks: { display: "flex", gap: "24px" },
   navLink: { color: "#A99BC4", textDecoration: "none", fontSize: "15px" },
   navActive: { color: "#7C4DFF", textDecoration: "none", fontSize: "15px", fontWeight: 600 },
+  logoutBtn: { background: "none", border: "none", color: "#A99BC4", fontSize: "15px", cursor: "pointer", fontFamily: "inherit", padding: 0 },
   content: { maxWidth: "800px", margin: "0 auto", padding: "40px 24px" },
   agentCard: { background: "#fff", border: "1px solid #E4DAFF", borderRadius: "16px", padding: "24px", display: "flex", alignItems: "center", gap: "20px", marginBottom: "40px", boxShadow: "0 2px 12px rgba(124,77,255,0.06)" },
   agentPulse: { width: "12px", height: "12px", borderRadius: "50%", background: "#7C4DFF", boxShadow: "0 0 10px #7C4DFF", flexShrink: 0 },
