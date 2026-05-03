@@ -73,7 +73,6 @@ export default function Profile() {
         <h1 style={styles.title}>Your Profile</h1>
         <p style={styles.subtitle}>Your agent uses this to find matches. Be honest — the AI works better with real answers.</p>
 
-        {/* Photos */}
         <div style={styles.section}>
           <h2 style={styles.sectionTitle}>Photos</h2>
           <div style={styles.photoGrid}>
@@ -85,15 +84,14 @@ export default function Profile() {
             ))}
             {photos.length < 6 && (
               <button style={styles.addPhoto} onClick={() => fileRef.current?.click()}>
-                <span style={{ fontSize: "28px", color: "#444" }}>+</span>
-                <span style={{ fontSize: "12px", color: "#555" }}>Add photo</span>
+                <span style={{ fontSize: "28px", color: "#C4B5F0" }}>+</span>
+                <span style={{ fontSize: "12px", color: "#A99BC4" }}>Add photo</span>
               </button>
             )}
           </div>
           <input ref={fileRef} type="file" accept="image/*" multiple style={{ display: "none" }} onChange={handlePhoto} />
         </div>
 
-        {/* Preferences */}
         <div style={styles.section}>
           <h2 style={styles.sectionTitle}>Preferences</h2>
           <div style={styles.fields}>
@@ -113,7 +111,7 @@ export default function Profile() {
         </div>
 
         <div style={styles.footer}>
-          <button style={styles.saveBtn} onClick={save}>
+          <button style={saved ? styles.savedBtn : styles.saveBtn} onClick={save}>
             {saved ? "Saved ✓" : "Save Changes"}
           </button>
           <Link href="/dashboard" style={styles.cancelBtn}>Back to Agent</Link>
@@ -124,27 +122,28 @@ export default function Profile() {
 }
 
 const styles: Record<string, React.CSSProperties> = {
-  page: { minHeight: "100vh", background: "#0A0A0A", color: "#fff" },
-  nav: { display: "flex", justifyContent: "space-between", alignItems: "center", padding: "20px 24px", borderBottom: "1px solid #1A1A1A" },
-  logo: { fontSize: "24px", fontWeight: 800, letterSpacing: "-2px", color: "#fff", textDecoration: "none" },
+  page: { minHeight: "100vh", background: "linear-gradient(135deg, #F5F0FF 0%, #EDE8FF 100%)", color: "#1A0A2E" },
+  nav: { display: "flex", justifyContent: "space-between", alignItems: "center", padding: "20px 24px", borderBottom: "1px solid #E4DAFF", background: "#fff" },
+  logo: { fontSize: "24px", fontWeight: 800, letterSpacing: "-2px", color: "#1A0A2E", textDecoration: "none" },
   navLinks: { display: "flex", gap: "24px" },
-  navLink: { color: "#666", textDecoration: "none", fontSize: "15px" },
-  navActive: { color: "#fff", textDecoration: "none", fontSize: "15px", fontWeight: 600 },
+  navLink: { color: "#A99BC4", textDecoration: "none", fontSize: "15px" },
+  navActive: { color: "#7C4DFF", textDecoration: "none", fontSize: "15px", fontWeight: 600 },
   content: { maxWidth: "700px", margin: "0 auto", padding: "40px 24px" },
-  title: { fontSize: "32px", fontWeight: 700, margin: "0 0 8px" },
-  subtitle: { color: "#666", fontSize: "15px", margin: "0 0 40px", lineHeight: 1.5 },
+  title: { fontSize: "32px", fontWeight: 700, margin: "0 0 8px", color: "#1A0A2E" },
+  subtitle: { color: "#A99BC4", fontSize: "15px", margin: "0 0 40px", lineHeight: 1.5 },
   section: { marginBottom: "40px" },
-  sectionTitle: { fontSize: "13px", fontWeight: 600, color: "#555", textTransform: "uppercase", letterSpacing: "1px", marginBottom: "16px" },
+  sectionTitle: { fontSize: "13px", fontWeight: 600, color: "#A99BC4", textTransform: "uppercase", letterSpacing: "1px", marginBottom: "16px" },
   photoGrid: { display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px" },
   photoWrapper: { position: "relative", aspectRatio: "1", borderRadius: "12px", overflow: "hidden" },
   photo: { width: "100%", height: "100%", objectFit: "cover" },
-  removePhoto: { position: "absolute", top: "6px", right: "6px", background: "rgba(0,0,0,0.7)", color: "#fff", border: "none", borderRadius: "50%", width: "24px", height: "24px", cursor: "pointer", fontSize: "16px", lineHeight: "22px", textAlign: "center" },
-  addPhoto: { aspectRatio: "1", background: "#111", border: "1px dashed #333", borderRadius: "12px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", cursor: "pointer", gap: "4px" },
+  removePhoto: { position: "absolute", top: "6px", right: "6px", background: "rgba(124,77,255,0.8)", color: "#fff", border: "none", borderRadius: "50%", width: "24px", height: "24px", cursor: "pointer", fontSize: "16px", lineHeight: "22px", textAlign: "center" },
+  addPhoto: { aspectRatio: "1", background: "#fff", border: "2px dashed #D4C8FF", borderRadius: "12px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", cursor: "pointer", gap: "4px" },
   fields: { display: "flex", flexDirection: "column", gap: "20px" },
   field: { display: "flex", flexDirection: "column", gap: "8px" },
-  label: { fontSize: "14px", fontWeight: 600, color: "#ccc" },
-  textarea: { background: "#111", border: "1px solid #222", borderRadius: "10px", padding: "12px 14px", color: "#fff", fontSize: "14px", lineHeight: 1.5, resize: "vertical", outline: "none", fontFamily: "inherit" },
+  label: { fontSize: "14px", fontWeight: 600, color: "#4A3A6A" },
+  textarea: { background: "#fff", border: "1px solid #E4DAFF", borderRadius: "10px", padding: "12px 14px", color: "#1A0A2E", fontSize: "14px", lineHeight: 1.5, resize: "vertical", outline: "none", fontFamily: "inherit" },
   footer: { display: "flex", gap: "12px", alignItems: "center", paddingTop: "8px" },
-  saveBtn: { background: "#fff", color: "#0A0A0A", padding: "14px 32px", borderRadius: "50px", border: "none", fontSize: "15px", fontWeight: 700, cursor: "pointer" },
-  cancelBtn: { color: "#666", textDecoration: "none", fontSize: "15px" },
+  saveBtn: { background: "#7C4DFF", color: "#fff", padding: "14px 32px", borderRadius: "50px", border: "none", fontSize: "15px", fontWeight: 700, cursor: "pointer" },
+  savedBtn: { background: "#22C55E", color: "#fff", padding: "14px 32px", borderRadius: "50px", border: "none", fontSize: "15px", fontWeight: 700, cursor: "pointer" },
+  cancelBtn: { color: "#A99BC4", textDecoration: "none", fontSize: "15px" },
 };

@@ -98,15 +98,15 @@ export default function InterviewPage() {
 }
 
 const styles: Record<string, React.CSSProperties> = {
-  page: { display: "flex", flexDirection: "column", height: "100vh", background: "#0A0A0A" },
-  nav: { display: "flex", justifyContent: "space-between", alignItems: "center", padding: "16px 24px", borderBottom: "1px solid #1A1A1A" },
-  logo: { fontSize: "22px", fontWeight: 800, letterSpacing: "-2px", color: "#fff", textDecoration: "none" },
-  navHint: { color: "#444", fontSize: "13px", margin: 0 },
+  page: { display: "flex", flexDirection: "column", height: "100vh", background: "#F5F0FF" },
+  nav: { display: "flex", justifyContent: "space-between", alignItems: "center", padding: "16px 24px", borderBottom: "1px solid #E4DAFF", background: "#fff" },
+  logo: { fontSize: "22px", fontWeight: 800, letterSpacing: "-2px", color: "#1A0A2E", textDecoration: "none" },
+  navHint: { color: "#C4B5F0", fontSize: "13px", margin: 0 },
   messages: { flex: 1, overflowY: "auto", padding: "24px 16px", display: "flex", flexDirection: "column", gap: "12px", maxWidth: "700px", width: "100%", margin: "0 auto", boxSizing: "border-box" },
-  agentBubble: { background: "#1A1A1A", color: "#fff", padding: "14px 18px", borderRadius: "18px 18px 18px 4px", maxWidth: "75%", fontSize: "16px", lineHeight: 1.5 },
-  userBubble: { background: "#fff", color: "#0A0A0A", padding: "14px 18px", borderRadius: "18px 18px 4px 18px", maxWidth: "75%", fontSize: "16px", lineHeight: 1.5 },
-  typing: { letterSpacing: "2px", color: "#666" },
-  inputBar: { borderTop: "1px solid #1A1A1A", padding: "12px 16px", display: "flex", gap: "8px", alignItems: "flex-end", maxWidth: "700px", width: "100%", margin: "0 auto", boxSizing: "border-box" },
-  input: { flex: 1, background: "#1A1A1A", color: "#fff", border: "none", borderRadius: "20px", padding: "12px 16px", fontSize: "16px", resize: "none", outline: "none", fontFamily: "inherit" },
-  sendBtn: { background: "#fff", color: "#0A0A0A", border: "none", borderRadius: "50%", width: "42px", height: "42px", fontSize: "18px", fontWeight: 700, cursor: "pointer", flexShrink: 0 },
+  agentBubble: { background: "#fff", color: "#1A0A2E", padding: "14px 18px", borderRadius: "18px 18px 18px 4px", maxWidth: "75%", fontSize: "16px", lineHeight: 1.5, border: "1px solid #E4DAFF", boxShadow: "0 1px 6px rgba(124,77,255,0.06)" },
+  userBubble: { background: "#7C4DFF", color: "#fff", padding: "14px 18px", borderRadius: "18px 18px 4px 18px", maxWidth: "75%", fontSize: "16px", lineHeight: 1.5 },
+  typing: { letterSpacing: "2px", color: "#C4B5F0" },
+  inputBar: { borderTop: "1px solid #E4DAFF", padding: "12px 16px", display: "flex", gap: "8px", alignItems: "flex-end", maxWidth: "700px", width: "100%", margin: "0 auto", boxSizing: "border-box", background: "#F5F0FF" },
+  input: { flex: 1, background: "#fff", color: "#1A0A2E", border: "1px solid #E4DAFF", borderRadius: "20px", padding: "12px 16px", fontSize: "16px", resize: "none", outline: "none", fontFamily: "inherit" },
+  sendBtn: { background: "#7C4DFF", color: "#fff", border: "none", borderRadius: "50%", width: "42px", height: "42px", fontSize: "18px", fontWeight: 700, cursor: "pointer", flexShrink: 0 },
 };
