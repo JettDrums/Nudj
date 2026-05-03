@@ -1,11 +1,11 @@
-# Nudj
+# Nudg
 
 AI-powered matching platform. Your agent meets their agent. If they click, you get a date.
 
 ## Structure
 
 ```
-nudj/
+nudg/
   mobile/     # React Native + Expo app
   backend/    # Python + FastAPI + Claude API
   shared/     # Shared types

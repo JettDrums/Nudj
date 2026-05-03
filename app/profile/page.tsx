@@ -19,9 +19,9 @@ export default function Profile() {
   const fileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    const raw = localStorage.getItem("nudj_profile");
+    const raw = localStorage.getItem("nudg_profile");
     if (raw) setProfile(JSON.parse(raw));
-    const storedPhotos = localStorage.getItem("nudj_photos");
+    const storedPhotos = localStorage.getItem("nudg_photos");
     if (storedPhotos) setPhotos(JSON.parse(storedPhotos));
   }, []);
 
@@ -30,7 +30,7 @@ export default function Profile() {
   }
 
   function save() {
-    localStorage.setItem("nudj_profile", JSON.stringify(profile));
+    localStorage.setItem("nudg_profile", JSON.stringify(profile));
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
   }
@@ -43,7 +43,7 @@ export default function Profile() {
         const url = ev.target?.result as string;
         setPhotos((prev) => {
           const updated = [...prev, url].slice(0, 6);
-          localStorage.setItem("nudj_photos", JSON.stringify(updated));
+          localStorage.setItem("nudg_photos", JSON.stringify(updated));
           return updated;
         });
       };
@@ -54,7 +54,7 @@ export default function Profile() {
   function removePhoto(i: number) {
     setPhotos((prev) => {
       const updated = prev.filter((_, idx) => idx !== i);
-      localStorage.setItem("nudj_photos", JSON.stringify(updated));
+      localStorage.setItem("nudg_photos", JSON.stringify(updated));
       return updated;
     });
   }
@@ -62,7 +62,7 @@ export default function Profile() {
   return (
     <div style={styles.page}>
       <nav style={styles.nav}>
-        <Link href="/" style={styles.logo}>nudj</Link>
+        <Link href="/" style={styles.logo}>nudg</Link>
         <div style={styles.navLinks}>
           <Link href="/dashboard" style={styles.navLink}>Agent</Link>
           <Link href="/profile" style={styles.navActive}>Profile</Link>

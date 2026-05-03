@@ -4,7 +4,7 @@ export default function Home() {
   return (
     <main style={styles.container}>
       <div style={styles.badge}>Beta</div>
-      <h1 style={styles.logo}>nudj</h1>
+      <h1 style={styles.logo}>nudg</h1>
       <p style={styles.tagline}>
         Your agent meets theirs.<br />If they click, you get a date.
       </p>

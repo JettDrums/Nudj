@@ -52,7 +52,7 @@ export default function InterviewPage() {
       const data = await res.json();
       setMessages([...newHistory, { role: "assistant", content: data.assistant_message }]);
       if (data.profile_complete && data.profile) {
-        localStorage.setItem("nudj_profile", JSON.stringify(data.profile));
+        localStorage.setItem("nudg_profile", JSON.stringify(data.profile));
         setTimeout(() => router.push("/dashboard"), 1800);
       }
     } catch {
@@ -66,7 +66,7 @@ export default function InterviewPage() {
     <div style={s.page}>
       {/* Nav */}
       <nav style={s.nav}>
-        <Link href="/" style={s.logo}>nudj</Link>
+        <Link href="/" style={s.logo}>nudg</Link>
         <div style={s.pill}>Building your agent</div>
       </nav>
 

@@ -4,7 +4,7 @@ import { router } from "expo-router";
 export default function HomeScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.logo}>nudj</Text>
+      <Text style={styles.logo}>nudg</Text>
       <Text style={styles.tagline}>Your agent meets theirs.{"\n"}If they click, you get a date.</Text>
       <TouchableOpacity style={styles.button} onPress={() => router.push("/interview")}>
         <Text style={styles.buttonText}>Build My Agent</Text>

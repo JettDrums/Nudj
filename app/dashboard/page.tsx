@@ -8,7 +8,7 @@ export default function Dashboard() {
   const [dots, setDots] = useState(".");
 
   useEffect(() => {
-    const raw = localStorage.getItem("nudj_profile");
+    const raw = localStorage.getItem("nudg_profile");
     if (raw) setProfile(JSON.parse(raw));
     const interval = setInterval(() => setDots((d) => d.length >= 3 ? "." : d + "."), 600);
     return () => clearInterval(interval);
@@ -17,7 +17,7 @@ export default function Dashboard() {
   return (
     <div style={styles.page}>
       <nav style={styles.nav}>
-        <Link href="/" style={styles.logo}>nudj</Link>
+        <Link href="/" style={styles.logo}>nudg</Link>
         <div style={styles.navLinks}>
           <Link href="/dashboard" style={styles.navActive}>Agent</Link>
           <Link href="/profile" style={styles.navLink}>Profile</Link>
