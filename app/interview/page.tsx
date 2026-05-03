@@ -30,9 +30,10 @@ export default function InterviewPage() {
     try {
       const res = await fetch(`/api/interview/start?session_id=${SESSION_ID}`, { method: "POST" });
       const data = await res.json();
-      setMessages([{ role: "assistant", content: data.assistant_message }]);
+      const msg = data.assistant_message || (data.error ? `Error: ${data.error}` : "Hey — ready to build your agent? Tell me a bit about yourself.");
+      setMessages([{ role: "assistant", content: msg }]);
       setStarted(true);
-    } catch {
+    } catch (e) {
       setMessages([{ role: "assistant", content: "Hey — ready to build your agent? Tell me a bit about yourself." }]);
       setStarted(true);
     } finally {
@@ -56,7 +57,8 @@ export default function InterviewPage() {
         body: JSON.stringify({ session_id: SESSION_ID, user_message: userMsg, history: messages }),
       });
       const data = await res.json();
-      setMessages([...newHistory, { role: "assistant", content: data.assistant_message }]);
+      const reply = data.assistant_message || (data.error ? `Error: ${data.error}` : "Something went wrong — try again?");
+      setMessages([...newHistory, { role: "assistant", content: reply }]);
       if (data.profile_complete && data.profile) {
         const { data: { user } } = await supabase.auth.getUser();
         if (user) {
