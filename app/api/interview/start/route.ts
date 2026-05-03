@@ -19,12 +19,12 @@ async function cohereChat(messages: { role: string; content: string }[]) {
     },
     body: JSON.stringify({ model: "command-r-plus", messages }),
   });
-  const data = await res.json();
-  // Cohere v2 format: data.message.content[0].text
-  // Cohere v1 format: data.text
-  if (data.message?.content?.[0]?.text) return data.message.content[0].text as string;
-  if (data.text) return data.text as string;
-  throw new Error(`Unexpected Cohere response: ${JSON.stringify(data)}`)
+  const raw = await res.text();
+  let data: Record<string, unknown>;
+  try { data = JSON.parse(raw); } catch { throw new Error(`Non-JSON from Cohere: ${raw.slice(0, 300)}`); }
+  if ((data as any).message?.content?.[0]?.text) return (data as any).message.content[0].text as string;
+  if ((data as any).text) return (data as any).text as string;
+  throw new Error(`Cohere response: ${raw.slice(0, 500)}`)
 }
 
 export async function POST(req: NextRequest) {
